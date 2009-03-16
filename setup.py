@@ -26,8 +26,12 @@ setup(name='buildout.minitagificator',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'zc.buildout',
+          'minitage.recipe',
           # -*- Extra requirements: -*-
       ],
+
+      extras_require={'test': ['IPython', 'zope.testing', 'mocker']},
       entry_points="""
       # -*- Entry points: -*-
       """,
