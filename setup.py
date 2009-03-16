@@ -3,7 +3,7 @@ import os
 
 version = '1.0'
 
-entry_point = 'buildout.minitagificator:install'
+entry_point = 'buildout.minitagificator.minitagificator:install'
 entry_points = {"zc.buildout.extension": ["default = %s" % entry_point]} 
 
 setup(name='buildout.minitagificator',
@@ -20,7 +20,7 @@ setup(name='buildout.minitagificator',
       keywords='',
       author='Mathieu Pasquet',
       author_email='kiorky@cryptelium.net',
-      url='http://svn.plone.org/svn/plone/plone.app.example',
+      url='http://pypi.python.org/pypi/buildout.minitagificator',
       license='GPL',
       packages = find_packages('src'),
       package_dir = {'': 'src'},
@@ -35,7 +35,7 @@ setup(name='buildout.minitagificator',
           # -*- Extra requirements: -*-
       ],
 
-      extras_require={'test': ['ZopeSkel', 'IPython', 'zope.testing', 'mocker']},
+      extras_require={'test': ['virtualenv', 'ZopeSkel', 'IPython', 'zope.testing', 'mocker']},
       entry_points= entry_points,
       )
 
