@@ -1,0 +1,183 @@
+Tests for buildout.eggtractor buildout extension
+------------------------------------------------
+
+Let's create a buildout configuration file::
+
+    >>> data = """
+    ... [buildout]
+    ... parts = zope2 instance1 instance2
+    ... extensions = buildout.minitagificator
+    ... eggs =
+    ... develop = 
+    ... [instance1]
+    ... recipe = plone.recipe.zope2instance
+    ... zope2-location = ${zope2:location}
+    ... user = admin:admin
+    ... [instance2]
+    ... recipe = plone.recipe.zope2instance
+    ... zope2-location = ${zope2:location}
+    ... user = admin:admin
+    ... [zope2]
+    ... recipe = plone.recipe.zope2install
+    ... url = http://www.zope.org/Products/Zope/2.9.8/Zope-2.9.8-final.tgz
+    ... """
+    >>> rmdir(tempdir, 'buildout.test')
+    >>> cd(tempdir)
+    >>> sh('mkdir buildout.test')
+    mkdir buildout.test
+    <BLANKLINE>
+    >>> cd('buildout.test')
+    >>> touch('buildout.cfg', data=data)
+    >>> ls('.')
+    buildout.cfg
+
+run the buildout first time so wget our zope instances::
+
+    >>> sh('buildout bootstrap')
+    buildout bootstrap
+    Creating directory '/tmp/buildout.test/bin'.
+    Creating directory '/tmp/buildout.test/parts'.
+    Creating directory '/tmp/buildout.test/develop-eggs'.
+    Generated script '/tmp/buildout.test/bin/buildout'.
+    <BLANKLINE>
+    >>> sh('bin/buildout')
+    bin/buildout
+    ...
+    Installing instance1.
+    Generated script '/tmp/buildout.test/bin/instance1'.
+    Generated script '/tmp/buildout.test/bin/repozo'.
+    Installing instance2.
+    Generated script '/tmp/buildout.test/bin/instance2'.
+    <BLANKLINE>
+    <BLANKLINE>
+    
+Now let's create an egg in the src directory::
+
+    >>> sh("bin/paster create --no-interactive -o src -t plone_app com.mustap.www namespace_package=com namespace_package2=mustap package=www")
+    paster create --no-interactive -o src -t plone_app com.mustap.www namespace_package=com namespace_package2=mustap package=www
+    ...
+    ...setup.py egg_info
+    <BLANKLINE>
+
+Ok, so now that we have an egg, lets run the buildout in offline mode. We 
+should get a link file in develop-egg, a zcml slugs in 
+parts/instance1/etc/package-includes and parts/instance2/etc/package-includes
+and a line with the path to our egg in the bin/instance1 and bin/instance2 
+files. 
+
+First we check that there is nothing of the previous mentioned things::
+
+    >>> ls('develop-eggs')
+    >>> ls('parts/instance1/etc/package-includes') 
+    No directory named parts/instance1/etc/package-includes
+
+    >>> ls('parts/instance2/etc/package-includes') 
+    No directory named parts/instance2/etc/package-includes
+
+    >>> sh('grep com.mustap.www bin/instance1')
+    grep com.mustap.www bin/instance1
+    <BLANKLINE>
+ 
+    >>> sh('grep com.mustap.www bin/instance2')
+    grep com.mustap.www bin/instance2
+    <BLANKLINE>
+
+OK, now run the buildout in offline mode::
+   
+    >>> sh('./bin/buildout -o')
+    ./bin/buildout -o
+    ...
+
+Check that we have a correct created buildout. First check that we have
+a link in the develop-eggs directory::
+
+    >>> ls('develop-eggs')
+    com.mustap.www.egg-link
+
+Check that we have our zcml slugs in the package-includes::
+
+    >>> ls('parts', 'instance1', 'etc', 'package-includes')
+    001-com.mustap.www-configure.zcml
+ 
+    >>> ls('parts', 'instance2', 'etc', 'package-includes')
+    001-com.mustap.www-configure.zcml
+
+and in the end check that there is a line in bin/instance1 and bin/instance1
+that includes our egg in the path::
+
+    >>> cat('bin', 'instance1')
+    #!/usr/bin/python2.4
+    ...
+    sys.path[0:0] = [
+      '/tmp/buildout.test/src/com.mustap.www',
+    ...
+      ]
+    ...
+
+    >>> cat('bin', 'instance2')
+    #!/usr/bin/python2.4
+    ...
+    sys.path[0:0] = [
+      '/tmp/buildout.test/src/com.mustap.www',
+    ...
+      ]
+    ...
+
+Let's now try the ``tractor-target-parts`` option. We create a new buildout.cfg file
+with an empty ``tractor-target-parts``::
+
+    >>> data = data.replace('eggs =', 'tractor-target-parts = \neggs = ')
+    >>> touch('buildout.cfg', data=data)
+    >>> sh('./bin/buildout -o')
+    ./bin/buildout -o
+    ...
+
+We get the egg link in the develop-egg directory::
+
+    >>> ls('develop-eggs')
+    com.mustap.www.egg-link
+
+But no zcml slug in the instance 1 and 2:: 
+
+    >>> ls('parts', 'instance1', 'etc', 'package-includes')
+    No directory named parts/instance1/etc/package-includes
+
+    >>> ls('parts', 'instance2', 'etc', 'package-includes')
+    No directory named parts/instance2/etc/package-includes
+
+Nor a line in bin/instance1 and bin/instance2 with our egg path::
+
+    >>> code = cat('bin', 'instance1', returndata=True)
+    >>> code.find('com.mustap.www') == -1
+    True
+
+    >>> code = cat('bin', 'instance2', returndata=True)
+    >>> code.find('com.mustap.www') == -1
+    True
+
+But if the ``tractor-target-parts`` option is not empty::
+
+    >>> data = data.replace('tractor-target-parts =', 'tractor-target-parts = instance1')
+    >>> touch('buildout.cfg', data=data)
+    >>> sh('./bin/buildout -o')
+    ./bin/buildout -o
+    ...
+
+and we get a zcml slug only in the specified target::
+
+    >>> ls('parts', 'instance1', 'etc', 'package-includes')
+    001-com.mustap.www-configure.zcml
+
+    >>> ls('parts', 'instance2', 'etc', 'package-includes')
+    No directory named parts/instance2/etc/package-includes
+
+and only the specified target's control script is updated::
+
+    >>> code = cat('bin', 'instance1', returndata=True)
+    >>> code.find('com.mustap.www') == -1
+    False
+
+    >>> code = cat('bin', 'instance2', returndata=True)
+    >>> code.find('com.mustap.www') == -1
+    True
+

@@ -3,6 +3,9 @@ import os
 
 version = '1.0'
 
+entry_point = 'buildout.minitagificator:install'
+entry_points = {"zc.buildout.extension": ["default = %s" % entry_point]} 
+
 setup(name='buildout.minitagificator',
       version=version,
       description="",
@@ -28,11 +31,11 @@ setup(name='buildout.minitagificator',
           'setuptools',
           'zc.buildout',
           'minitage.recipe',
+          'buildout.eggtractor',
           # -*- Extra requirements: -*-
       ],
 
-      extras_require={'test': ['IPython', 'zope.testing', 'mocker']},
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
+      extras_require={'test': ['ZopeSkel', 'IPython', 'zope.testing', 'mocker']},
+      entry_points= entry_points,
       )
+
