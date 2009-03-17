@@ -7,6 +7,7 @@ Introduction
         - All zc.recipe recipes but zc.recipe.custom:develop
         - zc.buildout.easy_install.install
 
+
 Installation
 =============
 
@@ -14,4 +15,11 @@ Installation
 
         [buildout]
         extensions = buildout.minitagificator
+
+
+
+
+
+
+
 
