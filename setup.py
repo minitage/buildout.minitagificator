@@ -10,6 +10,7 @@ setup(name='buildout.minitagificator',
       version=version,
       description="",
       long_description=open("README.txt").read() + "\n" +
+                       open(os.path.join("src", "buildout", "minitagificator", "minitagificator.txt")).read()+"\n"+
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[

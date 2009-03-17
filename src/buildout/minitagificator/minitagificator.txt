@@ -1,5 +1,5 @@
-Tests for buildout.eggtractor buildout extension
-------------------------------------------------
+Tests for buildout.minitagificator buildout extension
+-------------------------------------------------------
 
 Let's create a buildout configuration file::
 
@@ -30,7 +30,7 @@ Let's create a buildout configuration file::
     >>> ls('.')
     buildout.cfg
 
-Run the buildout and see the patch in action :=)
+Run the buildout and see the patch in action :=)::
 
     >>> a= [mkdir(d) for d in ('eggs', 'develop-eggs', 'bin', 'src')]
     >>> install_develop_eggs(['buildout.minitagificator'])
@@ -50,7 +50,7 @@ Run the buildout and see the patch in action :=)
     <BLANKLINE>
 
 
-We also monkey patch zc.recipe.egg stuff, to get our eggs happily installed with minitage recipes.
+We also monkey patch zc.recipe.egg stuff, to get our eggs happily installed with minitage recipes.::
 
     >>> sh('bin/buildout install egg')
     bin/buildout install egg...
@@ -68,4 +68,3 @@ We also monkey patch zc.recipe.egg stuff, to get our eggs happily installed with
     <BLANKLINE>
 
 
-... vim:set ft=doctest :
