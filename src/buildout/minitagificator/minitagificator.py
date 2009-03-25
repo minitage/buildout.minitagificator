@@ -17,6 +17,7 @@
 
 __docformat__ = 'restructuredtext en'
 
+import pkg_resources
 from minitage.recipe.egg import Recipe as Egg
 from minitage.recipe.scripts import Recipe as Script
 from copy import copy
@@ -58,7 +59,7 @@ def install(buildout=None):
             path=r.eggs_caches,
             allow_hosts=allow_hosts,
         )
-        reqs, working_set = r._install_requirements(specs, dest, working_set)
+        reqs, working_set = r.working_set(working_set=working_set)
         return working_set
     from zc.buildout import easy_install
     easy_install.install = install
