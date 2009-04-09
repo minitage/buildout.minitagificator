@@ -1,5 +1,3 @@
-
-
 #!/usr/bin/env python
 
 
@@ -17,17 +15,52 @@
 
 __docformat__ = 'restructuredtext en'
 
-import pkg_resources
+import logging
+
+from zc.buildout.easy_install import Installer
 from minitage.recipe.egg import Recipe as Egg
 from minitage.recipe.scripts import Recipe as Script
+from minitage.recipe.scripts import parse_entry_point
 from copy import copy
-import sys
-import zc.buildout.easy_install
 
-def install(buildout=None):
+__log__ = logging.getLogger('buildout.minitagificator')
 
+def monkey_patch_recipes(buildout):
+    # try to patch zc.recipe.egg
+    # and be kind on API Changes
+    __log__.info('Minitagiying some recipes')
+    try:
+        import zc.recipe.egg
+        if getattr(zc.recipe.egg, 'Egg', None):
+            __log__.debug('Patched zc.recipe.egg.Egg')
+            zc.recipe.egg.Egg = Script
+        else:
+          __log__.debug('!!!! Can\'t patch zc.recipe.egg.Egg')
+        if getattr(zc.recipe.egg, 'Eggs', None):
+            __log__.debug('Patched zc.recipe.egg.Eggs')
+            zc.recipe.egg.Eggs = Egg
+        else:
+          __log__.debug('!!!! Can\'t patch zc.recipe.egg.Eggs')
+        if getattr(zc.recipe.egg, 'Scripts', None):
+            __log__.debug('Patched zc.recipe.egg.Scripts')
+            zc.recipe.egg.Scripts = Script
+        else:
+            __log__.debug('!!!! Can\'t patch zc.recipe.egg.Scripts')
+    except Exception, e:
+        __log__.debug('!!!! Can\'t patch zc.recipe.egg.(Scripts|Eggs): %s' % e)
+    try:
+        import zc.recipe.egg.custom
+        if getattr(zc.recipe.egg.custom, 'Custom', None):
+            __log__.debug('Patched zc.recipe.egg.custom')
+            zc.recipe.egg.custom = Egg
+        else:
+            __log__.debug('!!!! Can\'t patch zc.recipe.egg.custom.Custom')
+    except:
+        __log__.debug('!!!! Can\'t patch zc.recipe.egg.custom.Custom')
+
+def monkey_patch_buildout_installer(buildout):
+    __log__.info('Minitagiying Buidout Installer')
     recipe = Egg(buildout, 'foo', buildout['buildout'])
-
     def install(specs, dest,
                 links=(), index=None,
                 executable=recipe.executable, always_unzip=None,
@@ -47,7 +80,7 @@ def install(buildout=None):
             r.eggs_caches = path
         if not versions:
             versions = buildout.get('versions', {})
-        r.inst = zc.buildout.easy_install.Installer(
+        r.inst = easy_install.Installer(
             dest=None,
             index=r.index,
             links=r.find_links,
@@ -64,16 +97,66 @@ def install(buildout=None):
     from zc.buildout import easy_install
     easy_install.install = install
 
-    # try to patch zc.recipe.egg
-    try:
-        from zc.recipe import egg, custom
-        egg.Eggs = Egg
-        custom.Custom = Egg
-        egg.Scripts = Script
-    except:
-        pass
+def monkey_patch_buildout_options(buildout):
+    __log__.info('Minitagiying Buidout Options')
+    from zc.buildout.buildout import Options
+    def _call(self, f):
+        monkey_patch_recipes(buildout)
+        return Options._old_call(self, f)
+    Options._old_call = Options._call
+    Options._call = _call
+
+def monkey_patch_buildout_scripts(buildout):
+    __log__.info('Minitagiying Buidout scripts')
+    def scripts(reqs,
+                working_set,
+                executable,
+                dest,
+                scripts=None,
+                extra_paths=(),
+                arguments='',
+                interpreter='',
+                initialization='',
+                relative_paths=False,
+               ):
+        if not scripts:
+            scripts = []
+        if (not relative_paths) or (relative_paths == 'false'):
+            relative_paths = 'false'
+        else:
+            relative_paths = 'true'
+        if not interpreter:
+            interpreter = ''
+        options = {}
+        options['eggs'] = ''
+        options['entry-points'] = ''
+        options['executable'] = executable
+        options['scripts'] = '\n'.join(scripts)
+        options['extra-paths'] = '\n'.join(extra_paths)
+        options['arguments'] = arguments
+        options['interpreter'] = interpreter
+        options['initialization'] = initialization
+        options['relative-paths'] = relative_paths
+        for req in reqs:
+            if isinstance(req, str):
+                if parse_entry_point(req):
+                    options['entry-points'] += '%s\n' % req
+                else:
+                    options['scripts'] += '%s\n' % req
+            elif isinstance(req, tuple):
+                options['entry-points'] += '%s=%s:%s' % req
+        r = Script(buildout, 'foo', options)
+        r._dest = dest
+        return r.install(working_set=working_set)
+    from zc.buildout import easy_install
+    easy_install.scripts = scripts
 
 
+def install(buildout=None):
+    monkey_patch_buildout_installer(buildout)
+    monkey_patch_buildout_scripts(buildout)
+    monkey_patch_buildout_options(buildout)
+    monkey_patch_recipes(buildout)
 
 # vim:set et sts=4 ts=4 tw=80:
 
