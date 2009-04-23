@@ -1,9 +1,16 @@
 Changelog
 =========
 
+
+2.1 -> 2.2
+---------------
+
+    * bugfix on egg cache searching
+    * bugfix on scripts filtering
+
 2.0
 -----
-    
+
     - 1.0 compatibility
     - zc.recipe.cmmi is now wrapped
 

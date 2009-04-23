@@ -102,12 +102,13 @@ def monkey_patch_buildout_installer(buildout):
             r.index = index
         if always_unzip:
             r.zip_safe = not always_unzip
-        caches = []
+        caches = r.eggs_caches[:]
         if path:
             if not isinstance(path, str):
                 caches.extend([ os.path.abspath(p) for p in path])
             else:
                 caches.append(os.path.abspath(path))
+        caches = common.uniquify(caches)
         for cache in caches:
             if not (cache in r.eggs_caches):
                 r.eggs_caches.append(cache)
@@ -185,7 +186,15 @@ def monkey_patch_buildout_scripts(buildout):
                 if parse_entry_point(req):
                     options['entry-points'] += '%s\n' % req
                 else:
-                    options['scripts'] += '%s\n' % req
+                    # append it to eggs to be generated
+                    try:
+                        #if it is really an egg
+                        req = pkg_resources.Requirement.parse(req)
+                        # append it to eggs
+                        options['eggs'] += '\n%s' % req 
+                    except Exception, e:
+                        #other wise, just add the dist to the scripts for later use
+                        options['scripts'] += '\n%s' % req
             elif isinstance(req, tuple):
                 options['entry-points'] += '%s=%s:%s' % req
         r = Script(buildout, 'foo', options)
