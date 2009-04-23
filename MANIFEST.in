@@ -1,9 +1,0 @@
-recursive-include  docs  *.txt *.py *tmpl *cfg *ini
-recursive-include  src   *.txt *.py *tmpl *cfg *ini
-include README.txt
-include setup.py
-include setup.cfg
-
-
-
-
