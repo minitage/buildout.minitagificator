@@ -1,6 +1,24 @@
 Changelog
 =========
 
+2.0
+-----
+    
+    - 1.0 compatibility
+    - zc.recipe.cmmi is now wrapped
+
+1.6
+-----
+
+* Get an absolute path for python!
+
+1.5
+--------
+
+* Refactor code
+* Add a wrapper to zc.buildout.easy_install.scripts
+* Make it work with relative-paths
+
 1.4
 ---------
 
@@ -11,7 +29,7 @@ Changelog
 
 * packaging
 
-1.0 
+1.0
 ----------------
 
 * Initial release

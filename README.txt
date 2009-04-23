@@ -3,9 +3,10 @@ Introduction
 
     - This packages aims to replace some buildout parts by minitage's ones.
     - It replaces:
-    
-        - All zc.recipe recipes but zc.recipe.custom:develop
-        - zc.buildout.easy_install.install
+
+        - All zc.recipe.egg recipes but zc.recipe.custom:develop
+        - zc.buildout.easy_install.install.Installer
+        - zc.recipe.cmmi
 
 
 Installation

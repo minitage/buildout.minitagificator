@@ -5,7 +5,7 @@ Let's create a buildout configuration file::
 
     >>> data = """
     ... [buildout]
-    ... parts = 
+    ... parts =
     ...     part
     ... extensions = buildout.minitagificator
     ... [part]
@@ -18,7 +18,7 @@ Let's create a buildout configuration file::
     ... eggs=zc.buildout
     ... [script]
     ... recipe=zc.recipe.egg:scripts
-    ... eggs=zc.buildout 
+    ... eggs=zc.buildout
     ... """
     >>> rmdir(tempdir, 'buildout.test')
     >>> cd(tempdir)
@@ -40,31 +40,41 @@ Run the buildout and see the patch in action :=)::
     Generated script '/tmp/buildout.test/bin/buildout'.
     >>> sh('bin/buildout install part')
     bin/buildout install part
-    Getting distribution for 'iw.recipe.cmd'.
-    Got iw.recipe.cmd ...
-    minitage.recipe: Picked: zc.buildout = ...
-    minitage.recipe: Picked: setuptools = ...
-    Unused options for buildout: 'download-directory'.
-    Installing part.
-    Unused options for part: 'cmds' 'on-update' 'on-install'.
-    <BLANKLINE>
-
+    buildout.minitagificator: Minitagiying Buidout Installer
+    buildout.minitagificator: Minitagiying Buidout scripts
+    buildout.minitagificator: Minitaging Buidout Options
+    buildout.minitagificator: Minitaging some recipes
+    minitage.recipe: Installing python egg(s)...
 
 We also monkey patch zc.recipe.egg stuff, to get our eggs happily installed with minitage recipes.::
 
     >>> sh('bin/buildout install egg')
-    bin/buildout install egg...
-    Installing egg.
+    bin/buildout install egg
+    buildout.minitagificator: Minitagiying Buidout Installer
+    buildout.minitagificator: Minitagiying Buidout scripts
+    buildout.minitagificator: Minitaging Buidout Options
+    buildout.minitagificator: Minitaging some recipes
+    minitage.recipe: Installing python egg(s)...
+    minitage.recipe: Installing python egg(s).
+    minitage.recipe: Trying to get  distribution for 'zc.recipe.egg'
+    minitage.recipe: Download archive
+    minitage.recipe: Unpacking in /tm...
+    minitage.recipe: Guessing compilation directory
     minitage.recipe: Picked: zc.buildout = ...
-    minitage.recipe: Picked: setuptools = ...
-    <BLANKLINE>
+    minitage.recipe: Setting path
+    minitage.recipe: Setting path
+    minitage.recipe: Setting pkgconfigpath
+    minitage.recipe: Setting compilation flags...
 
     >>> sh('bin/buildout install script')
     bin/buildout install script...
     Installing script.
+    buildout.minitagificator: Minitaging some recipes
+    minitage.recipe: Installing python egg(s).
     minitage.recipe: Picked: zc.buildout = ...
     minitage.recipe: Picked: setuptools = ...
-    minitage.recipe: Generated script '/tmp/buildout.test/bin/buildout'.
+    minitage.recipe: Installing console scripts.
+    minitage.recipe: Installing python egg(s).
+    minitage.recipe: Generated scripts: 'buildout'.
     <BLANKLINE>
-
 
