@@ -5,6 +5,7 @@ Changelog
 2.1 -> 2.2
 ---------------
 
+    * fix tests (the only 2.2 change is in the test;)
     * bugfix on egg cache searching
     * bugfix on scripts filtering
 

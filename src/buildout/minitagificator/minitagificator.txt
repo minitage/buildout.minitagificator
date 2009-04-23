@@ -19,6 +19,7 @@ Let's create a buildout configuration file::
     ... [script]
     ... recipe=zc.recipe.egg:scripts
     ... eggs=zc.buildout
+    ... scripts=buildout
     ... """
     >>> rmdir(tempdir, 'buildout.test')
     >>> cd(tempdir)
@@ -69,12 +70,7 @@ We also monkey patch zc.recipe.egg stuff, to get our eggs happily installed with
     >>> sh('bin/buildout install script')
     bin/buildout install script...
     Installing script.
-    buildout.minitagificator: Minitaging some recipes
-    minitage.recipe: Installing python egg(s).
-    minitage.recipe: Picked: zc.buildout = ...
-    minitage.recipe: Picked: setuptools = ...
-    minitage.recipe: Installing console scripts.
-    minitage.recipe: Installing python egg(s).
+    buildout.minitagificator: Minitaging some recipes...
     minitage.recipe: Generated scripts: 'buildout'.
     <BLANKLINE>
 
