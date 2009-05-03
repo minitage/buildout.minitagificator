@@ -64,11 +64,11 @@ def monkey_patch_recipes(buildout):
         import zc.recipe.egg.custom
         if getattr(zc.recipe.egg.custom, 'Custom', None):
             __log__.debug('Patched zc.recipe.egg.custom')
-            zc.recipe.egg.custom = Egg
+            zc.recipe.egg.custom.Custom = Egg
         else:
-            __log__.debug('!!!! Can\'t patch zc.recipe.egg.custom.Custom')
+            __log__.debug('!!!! Can\'t patch zc.recipe.egg.custom.Custom!!!')
     except:
-        __log__.debug('!!!! Can\'t patch zc.recipe.egg.custom.Custom')
+        __log__.debug('!!!! Can\'t patch zc.recipe.egg.custom.Custom.')
     try:
         import zc.recipe.cmmi
         if getattr(zc.recipe.cmmi, 'Recipe', None):
@@ -140,8 +140,9 @@ def monkey_patch_buildout_installer(buildout):
 
 def monkey_patch_buildout_options(buildout):
     __log__.info('Minitaging Buidout Options')
-    from zc.buildout.buildout import Options
+    from zc.buildout.buildout import Options, _buildout_default_options
     def _call(self, f):
+        initialization = True
         monkey_patch_recipes(buildout)
         Options._buildout = buildout
         return Options._old_call(self, f)
@@ -206,6 +207,8 @@ def monkey_patch_buildout_scripts(buildout):
 
 
 def install(buildout=None):
+    # pre-initialize me, the hacky way !
+    bstr = "%s" % buildout
     monkey_patch_buildout_installer(buildout)
     monkey_patch_buildout_scripts(buildout)
     monkey_patch_buildout_options(buildout)

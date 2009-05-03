@@ -39,13 +39,16 @@ Run the buildout and see the patch in action :=)::
     >>> buildout('bootstrap')
     Creating directory '/tmp/buildout.test/parts'.
     Generated script '/tmp/buildout.test/bin/buildout'.
-    >>> sh('bin/buildout install part')
-    bin/buildout install part
-    buildout.minitagificator: Minitagiying Buidout Installer
-    buildout.minitagificator: Minitagiying Buidout scripts
-    buildout.minitagificator: Minitaging Buidout Options
+    >>> sh('bin/buildout -vvvvv install part')
+    bin/buildout...
+    Installing part.
     buildout.minitagificator: Minitaging some recipes
-    minitage.recipe: Installing python egg(s)...
+    buildout.minitagificator: Patched zc.recipe.egg.Egg
+    buildout.minitagificator: Patched zc.recipe.egg.Eggs
+    buildout.minitagificator: Patched zc.recipe.egg.Scripts
+    buildout.minitagificator: Patched zc.recipe.egg.custom
+    buildout.minitagificator: Patched zc.recipe.cmmi
+    <BLANKLINE>
 
 We also monkey patch zc.recipe.egg stuff, to get our eggs happily installed with minitage recipes.::
 
@@ -56,16 +59,10 @@ We also monkey patch zc.recipe.egg stuff, to get our eggs happily installed with
     buildout.minitagificator: Minitaging Buidout Options
     buildout.minitagificator: Minitaging some recipes
     minitage.recipe: Installing python egg(s)...
-    minitage.recipe: Installing python egg(s).
-    minitage.recipe: Trying to get  distribution for 'zc.recipe.egg'
-    minitage.recipe: Download archive
-    minitage.recipe: Unpacking in /tm...
-    minitage.recipe: Guessing compilation directory
-    minitage.recipe: Picked: zc.buildout = ...
-    minitage.recipe: Setting path
-    minitage.recipe: Setting path
-    minitage.recipe: Setting pkgconfigpath
-    minitage.recipe: Setting compilation flags...
+    Installing egg.
+    buildout.minitagificator: Minitaging some recipes
+    minitage.recipe: Installing python egg(s)...
+    <BLANKLINE>
 
     >>> sh('bin/buildout install script')
     bin/buildout install script...

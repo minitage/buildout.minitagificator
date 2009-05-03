@@ -2,6 +2,11 @@ Changelog
 =========
 
 
+2.3
+-----
+
+    - fix buildout initialization problem
+
 2.1 -> 2.2
 ---------------
 
