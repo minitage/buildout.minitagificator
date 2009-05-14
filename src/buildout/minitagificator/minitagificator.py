@@ -173,6 +173,7 @@ def monkey_patch_buildout_scripts(buildout):
         if not interpreter:
             interpreter = ''
         options = {}
+        options['generate_all_scripts'] = True
         options['eggs'] = ''
         options['entry-points'] = ''
         options['executable'] = executable
