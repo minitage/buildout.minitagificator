@@ -176,7 +176,8 @@ def monkey_patch_buildout_scripts(buildout):
         options['eggs'] = ''
         options['entry-points'] = ''
         options['executable'] = executable
-        options['scripts'] = '\n'.join(scripts)
+        if '\n'.join(scripts).strip():
+            options['scripts'] = '\n'.join(scripts)
         options['extra-paths'] = '\n'.join(extra_paths)
         options['arguments'] = arguments
         options['interpreter'] = interpreter

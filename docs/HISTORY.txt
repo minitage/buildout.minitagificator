@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.3.3
+-------------
+
+    - filtration of scripts
 
 2.3
 -----
