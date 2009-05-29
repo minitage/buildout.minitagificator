@@ -91,6 +91,7 @@ def monkey_patch_buildout_installer(buildout):
             executable = common.which(executable)
         opts = copy(buildout['buildout'])
         opts['executable'] = executable
+        opts['buildoutscripts'] = 'true'
         r = Egg(buildout, 'foo', opts)
         r.eggs = specs
         r._dest = dest
@@ -195,7 +196,7 @@ def monkey_patch_buildout_scripts(buildout):
                         #if it is really an egg
                         req = pkg_resources.Requirement.parse(req)
                         # append it to eggs
-                        options['eggs'] += '\n%s' % req 
+                        options['eggs'] += '\n%s' % req
                     except Exception, e:
                         #other wise, just add the dist to the scripts for later use
                         options['scripts'] += '\n%s' % req
