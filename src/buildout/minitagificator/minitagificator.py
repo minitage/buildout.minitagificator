@@ -37,10 +37,16 @@ def activate(ws):
         if not entry in sys.path:
             sys.path.append(entry)
 
+
+class Script(Script):
+
+    for_patchs = True
+
 def monkey_patch_recipes(buildout):
     # try to patch zc.recipe.egg
     # and be kind on API Changes
     __log__.info('Minitaging some recipes')
+
     try:
         import zc.recipe.egg
         if getattr(zc.recipe.egg, 'Egg', None):
