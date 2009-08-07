@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '2.3.7'
+version = '2.3.8'
 
 entry_point = 'buildout.minitagificator.minitagificator:install'
 entry_points = {"zc.buildout.extension": ["default = %s" % entry_point]}
@@ -36,7 +36,15 @@ setup(name='buildout.minitagificator',
           # -*- Extra requirements: -*-
       ],
 
-      extras_require={'test': ['virtualenv', 'ZopeSkel', 'IPython', 'zope.testing', 'mocker']},
+      extras_require={'test': ['virtualenv',
+                               'ZopeSkel',
+                               'IPython',
+                               'zope.testing',
+                               'mocker',
+                               'zc.recipe.egg',
+                               'zc.recipe.cmmi'
+                              ]
+                     },
       entry_points= entry_points,
       )
 

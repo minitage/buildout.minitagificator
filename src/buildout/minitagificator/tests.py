@@ -14,7 +14,7 @@ import virtualenv as m_virtualenv
 from os import makedirs as mkdir
 from shutil import copy
 from zc.buildout.buildout import Buildout
-from zc.buildout import buildout as bo 
+from zc.buildout import buildout as bo
 from zc.buildout.testing import *
 
 
@@ -69,11 +69,15 @@ def install_eggs_from_pathes(reqs, pathes=None, path='eggs'):
         for dist in dists:
             if dist.precedence != pkg_resources.DEVELOP_DIST:
                 to_copy.append(dist)
-                
+
 
         for dist in to_copy:
-            r = dist.as_requirement()
-            install('%s'%r, path)
+            content = os.listdir(path)
+            if not [c
+                    for c in content
+                    if c.startswith('%s-%s' % (dist.project_name, dist.version))]:
+                r = dist.as_requirement()
+                install('%s'%r, path)
 
 
 def install_develop_eggs(develop_eggs=None, develop_path='develop-eggs'):
@@ -96,14 +100,6 @@ def touch(*args, **kwargs):
     filename = os.path.join(*args)
     open(filename, 'w').write(kwargs.get('data',''))
 
-
-def virtualenv(path='.', args=None):
-    if not args:
-        args = ['--no-site-packages']
-    argv = sys.argv[:]
-    sys.argv = [sys.executable] + args + [path]
-    m_virtualenv.main()
-    sys.argv=argv
 
 
 def virtualenv(path='.', args=None):

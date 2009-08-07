@@ -18,6 +18,11 @@ Installation
         extensions = buildout.minitagificator
 
 
+TIPS
+========
+
+    -   set ``minitage-globalenv`` in buildout for the extension to set cflags
+        and other things borrowed from the project minibuild if any.
 
 
 

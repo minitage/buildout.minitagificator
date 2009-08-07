@@ -82,11 +82,11 @@ def monkey_patch_recipes(buildout):
             zc.recipe.cmmi.Recipe = Cmmi
         else:
             __log__.debug('!!!! Can\'t patch zc.recipe.cmmi')
-    except:
+    except Exception, e:
         __log__.debug('!!!! Can\'t patch zc.recipe.cmmi')
 
 def monkey_patch_buildout_installer(buildout):
-    __log__.info('Minitagiying Buidout Installer')
+    __log__.info('Minitaging Buildout Installer')
     dexecutable = buildout['buildout']['executable']
     def install(specs, dest,
                 links=(), index=None,
@@ -146,7 +146,7 @@ def monkey_patch_buildout_installer(buildout):
     easy_install.install = install
 
 def monkey_patch_buildout_options(buildout):
-    __log__.info('Minitaging Buidout Options')
+    __log__.info('Minitaging Buildout Options')
     from zc.buildout.buildout import Options, _buildout_default_options
     def _call(self, f):
         initialization = True
@@ -157,7 +157,7 @@ def monkey_patch_buildout_options(buildout):
     Options._call = _call
 
 def monkey_patch_buildout_scripts(buildout):
-    __log__.info('Minitagiying Buidout scripts')
+    __log__.info('Minitaging Buildout scripts')
     def scripts(reqs,
                 working_set,
                 executable,
@@ -215,6 +215,11 @@ def monkey_patch_buildout_scripts(buildout):
     from zc.buildout import easy_install
     easy_install.scripts = scripts
 
+def set_minitage_env(buildout):
+    options = {}
+    r = Script(buildout, 'foo', options)
+    r._set_compilation_flags()
+
 
 def install(buildout=None):
     # pre-initialize me, the hacky way !
@@ -223,6 +228,8 @@ def install(buildout=None):
     monkey_patch_buildout_scripts(buildout)
     monkey_patch_buildout_options(buildout)
     monkey_patch_recipes(buildout)
+    if 'minitage-globalenv' in buildout['buildout']:
+        set_minitage_env(buildout)
 
 # vim:set et sts=4 ts=4 tw=80:
 

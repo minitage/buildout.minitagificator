@@ -1,6 +1,12 @@
 Changelog
 =========
 
+-> 2.3.7
+-----------
+
+    - fix tests
+    - add minitage-globalenv
+
 2.3.3 -> 2.3.5
 ------------------
 
