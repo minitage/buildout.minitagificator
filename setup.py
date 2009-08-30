@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '2.3.8'
+version = '2.3.9'
 
 entry_point = 'buildout.minitagificator.minitagificator:install'
 entry_points = {"zc.buildout.extension": ["default = %s" % entry_point]}
@@ -32,7 +32,10 @@ setup(name='buildout.minitagificator',
       install_requires=[
           'setuptools',
           'zc.buildout',
-          'minitage.recipe',
+          'minitage.recipe.egg',
+          'minitage.recipe.cmmi',
+          'minitage.recipe.scripts',
+          'minitage.recipe.common',
           # -*- Extra requirements: -*-
       ],
 

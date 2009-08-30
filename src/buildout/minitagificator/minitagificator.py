@@ -24,11 +24,11 @@ import pkg_resources
 
 from zc.buildout.easy_install import Installer
 
-from minitage.recipe.egg import Recipe as Egg
-from minitage.recipe import common
-from minitage.recipe.scripts import Recipe as Script
-from minitage.recipe.cmmi import Recipe as Cmmi
-from minitage.recipe.scripts import parse_entry_point
+from minitage.recipe.egg.egg import Recipe as Egg
+from minitage.recipe.common import common
+from minitage.recipe.scripts.scripts import Recipe as Script
+from minitage.recipe.cmmi.cmmi import Recipe as Cmmi
+from minitage.recipe.scripts.scripts import parse_entry_point
 
 __log__ = logging.getLogger('buildout.minitagificator')
 

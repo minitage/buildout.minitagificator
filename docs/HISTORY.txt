@@ -1,7 +1,12 @@
 Changelog
 =========
 
--> 2.3.7
+2.3.9
+-------
+
+    - up to minitage.recipe.*
+
+-> 2.3.8
 -----------
 
     - fix tests
