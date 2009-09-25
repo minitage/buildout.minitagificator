@@ -148,7 +148,37 @@ def monkey_patch_buildout_installer(buildout):
 def monkey_patch_buildout_options(buildout):
     __log__.info('Minitaging Buildout Options')
     from zc.buildout.buildout import Options, _buildout_default_options
+    from zc.buildout.buildout import _install_and_load, _recipe
+
+    def _initialize(self, *args, **kwargs):
+        """On intialization, install our recipe instead"""
+        Options._old_initialize(self, *args, **kwargs)
+        recipe = self.get('recipe')
+        if not recipe:
+            return
+        name = self.name
+        reqs, entry = _recipe(self._data)
+        mappings = {
+            ('zc.recipe.egg', 'default'): ('minitage.recipe.scripts', 'default'),
+            ('zc.recipe.egg', 'script'): ('minitage.recipe.scripts', 'default'),
+            ('zc.recipe.egg', 'scripts'): ('minitage.recipe.scripts', 'default'),
+            ('zc.recipe.egg', 'Custom'): ('minitage.recipe.scripts', 'default'),
+            ('zc.recipe.egg', 'Eggs'): ('minitage.recipe.egg', 'default'),
+            ('zc.recipe.egg', 'eggs'): ('minitage.recipe.egg', 'default'),
+            ('zc.recipe.cmmi', 'default'): ('minitage.recipe.cmmi', 'default'),
+        }
+        reqsa, entrya = mappings.get((reqs, entry), (None, None))
+        if reqsa:
+            recipe_class = _install_and_load(reqsa, 'zc.buildout', entrya, self.buildout)
+            self.recipe = recipe_class(buildout, name, self)
+            self.recipe.logger.info(
+                "Replaced %s with %s" % ((reqs, entry), (reqsa, entrya))
+            )
+    Options._old_initialize = Options._initialize
+    Options._initialize = _initialize
+
     def _call(self, f):
+        """On call, verify that our recipes are used"""
         initialization = True
         monkey_patch_recipes(buildout)
         Options._buildout = buildout
@@ -220,10 +250,8 @@ def set_minitage_env(buildout):
     r = Script(buildout, 'foo', options)
     r._set_compilation_flags()
 
-
 def install(buildout=None):
     # pre-initialize me, the hacky way !
-    bstr = "%s" % buildout
     monkey_patch_buildout_installer(buildout)
     monkey_patch_buildout_scripts(buildout)
     monkey_patch_buildout_options(buildout)

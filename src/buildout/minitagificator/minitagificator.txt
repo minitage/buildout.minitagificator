@@ -39,37 +39,41 @@ Run the buildout and see the patch in action :=)::
     >>> buildout('bootstrap')
     Creating directory '/tmp/buildout.test/parts'.
     Generated script '/tmp/buildout.test/bin/buildout'.
-    >>> sh('bin/buildout -vvvvv install part')
+    >>> sh('bin/buildout -vvvvv')
     bin/buildout...
     Installing part.
     buildout.minitagificator: Minitaging some recipes
-    buildout.minitagificator: Patched zc.recipe.egg.Egg
-    buildout.minitagificator: Patched zc.recipe.egg.Eggs
-    buildout.minitagificator: Patched zc.recipe.egg.Scripts
-    buildout.minitagificator: Patched zc.recipe.egg.custom
-    buildout.minitagificator: ...zc.recipe.cmmi...
+    buildout.minitagificator: !!!! Can't patch zc.recipe.egg.(Scripts|Eggs): No module named recipe.egg
+    buildout.minitagificator: !!!! Can't patch zc.recipe.egg.custom.Custom.
+    buildout.minitagificator: !!!! Can't patch zc.recipe.cmmi
     <BLANKLINE>
 
 We also monkey patch zc.recipe.egg stuff, to get our eggs happily installed with minitage recipes.::
 
     >>> sh('bin/buildout install egg')
-    bin/buildout install egg
+    bin/buildout install egg...
     buildout.minitagificator: Minitaging Buildout Installer
     buildout.minitagificator: Minitaging Buildout scripts
     buildout.minitagificator: Minitaging Buildout Options
     buildout.minitagificator: Minitaging some recipes...
+    minitage.recipe: Replaced ('zc.recipe.egg', 'eggs') with ('minitage.recipe.egg', 'default')...
     Installing egg...
+    buildout.minitagificator: Minitaging some recipes...
     <BLANKLINE>
 
     >>> sh('bin/buildout install script')
-    bin/buildout install script
+    bin/buildout install script...
     buildout.minitagificator: Minitaging Buildout Installer
     buildout.minitagificator: Minitaging Buildout scripts
     buildout.minitagificator: Minitaging Buildout Options
     buildout.minitagificator: Minitaging some recipes...
-    Installing script.
-    buildout.minitagificator: Minitaging some recipes...
-    minitage.recipe: Generated scripts: 'buildout', 'easy_install', 'easy_install-2.6'.
+    minitage.recipe: Replaced ('zc.recipe.egg', 'scripts') with ('minitage.recipe.scripts', 'default')...
+    Installing script....
+    buildout.minitagificator: Minitaging some recipes
+    minitage.recipe: Installing console scripts.
+    minitage.recipe: Installing python egg(s).
+    minitage.recipe: Picked: zc.buildout ...
+    minitage.recipe: Picked: setuptools ...
+    minitage.recipe: Generated scripts: 'buildout'.
     <BLANKLINE>
-
 

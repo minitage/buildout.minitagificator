@@ -1,6 +1,17 @@
 Changelog
 =========
 
+
+2.4.1
+------
+
+    - up tests
+
+2.4.0
+------
+
+    - more robust code for monkey patch
+
 2.3.9
 -------
 
