@@ -128,6 +128,8 @@ def monkey_patch_buildout_installer(buildout):
         #        'import sys;print sys.version[:3]'
         #    )
         #).read().replace('\n', '')
+        if buildout.offline:
+            allow_hosts = 'None'
         r.inst = easy_install.Installer(
             dest=None,
             index=r.index,
@@ -211,6 +213,7 @@ def monkey_patch_buildout_scripts(buildout):
             interpreter = ''
         options = {}
         options['generate_all_scripts'] = True
+        options['eggs'] = ''
         options['eggs'] = ''
         options['entry-points'] = ''
         options['executable'] = executable
