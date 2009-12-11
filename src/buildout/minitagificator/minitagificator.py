@@ -98,7 +98,7 @@ def monkey_patch_buildout_installer(buildout):
             executable = common.which(executable)
 
         if not working_set:
-            working_set = pkg_resources.working_set
+            working_set = pkg_resources.WorkingSet([])
 
         for i, spec in enumerate(specs[:]):
             if 'setuptools' in spec:
