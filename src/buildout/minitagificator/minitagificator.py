@@ -93,8 +93,23 @@ def monkey_patch_buildout_installer(buildout):
                 executable=dexecutable, always_unzip=None,
                 path=None, working_set=None, newest=True, versions=None,
                 use_dependency_links=None, allow_hosts=('*',)):
+
         if not '/' in executable:
             executable = common.which(executable)
+
+        if not working_set:
+            working_set = pkg_resources.working_set
+
+        for i, spec in enumerate(specs[:]):
+            if 'setuptools' in spec:
+                try:
+                    # do we have distribute out there
+                    working_set.require('distribute')
+                    if isinstance(specs[i], str):
+                        specs[i] = specs[i].replace('setuptools', 'distribute')
+                    __log__.info('We are using distribute')
+                except:
+                    __log__.info('We are not using distribute')
         opts = copy(buildout['buildout'])
         opts['executable'] = executable
         opts['buildoutscripts'] = 'true'
