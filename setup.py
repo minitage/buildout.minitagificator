@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '2.4.7'
+version = '2.4.8'
 
 entry_point = 'buildout.minitagificator.minitagificator:install'
 entry_points = {"zc.buildout.extension": ["default = %s" % entry_point]}

@@ -229,7 +229,6 @@ def monkey_patch_buildout_scripts(buildout):
         options = {}
         options['generate_all_scripts'] = True
         options['eggs'] = ''
-        options['eggs'] = ''
         options['entry-points'] = ''
         options['executable'] = executable
         if '\n'.join(scripts).strip():
@@ -257,6 +256,10 @@ def monkey_patch_buildout_scripts(buildout):
             elif isinstance(req, tuple):
                 options['entry-points'] += '%s=%s:%s' % req
         r = Script(buildout, 'foo', options)
+        if dest and options.get('bin-directory', False):
+            if dest == options['bin-directory']:
+                dest = buildout['buildout'].get('eggs-directory', 'eggs')
+
         r._dest = dest
         res = r.install(working_set=working_set)
         return res
