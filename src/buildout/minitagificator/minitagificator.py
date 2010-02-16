@@ -157,6 +157,7 @@ def monkey_patch_buildout_installer(buildout):
             path=r.eggs_caches,
             allow_hosts=allow_hosts,
         )
+        r.platform_scan()
         reqs, working_set = r.working_set(working_set=working_set)
         return working_set
     from zc.buildout import easy_install

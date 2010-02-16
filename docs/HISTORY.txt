@@ -1,9 +1,16 @@
 Changelog
 =========
 
+
+2.4.9
+------
+
+    - Snowleopard and crossplatform fix according to related 
+      minitage.recipe.egg improvments (r.platform_scan() adds)
+
 2.4.8
 ------
-    
+
     - more distribute friendly
 
 2.4.2
