@@ -30,8 +30,8 @@ setup(name='buildout.minitagificator',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          
           'zc.buildout',
+          'minitage.recipe',
           'minitage.recipe.egg',
           'minitage.recipe.cmmi',
           'minitage.recipe.scripts',
