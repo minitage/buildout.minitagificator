@@ -271,6 +271,9 @@ def set_minitage_env(buildout):
     options = {}
     r = Script(buildout, 'foo', options)
     r._set_compilation_flags()
+    r._set_path()
+    r._set_py_path()
+    r._set_pkgconfigpath()
 
 def install(buildout=None):
     # pre-initialize me, the hacky way !
