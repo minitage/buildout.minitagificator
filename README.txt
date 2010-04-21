@@ -1,7 +1,9 @@
+
+.. contents::
+
 Introduction
 ============
 
-.. contents::
 
     - This packages aims to replace some buildout parts by minitage's ones.
     - It replaces:
@@ -19,6 +21,13 @@ Installation
         [buildout]
         extensions = buildout.minitagificator
 
+Makina Corpus Sponsorised software
+======================================
+
+  http://www.makina-corpus.com & http://makina-corpus.org
+
+    plone at makina-corpus org
+
 
 TIPS
 ========
@@ -27,12 +36,5 @@ TIPS
         and other things borrowed from the project minibuild if any.
 
 
-
-Makina Corpus Sponsorised software
-======================================
-
-  http://www.makina-corpus.com & http://makina-corpus.org
-
-    plone at makina-corpus org
 
 
