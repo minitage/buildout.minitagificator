@@ -23,10 +23,16 @@ Installation
 
 Makina Corpus sponsorised software
 ======================================
+|makinacom|_
 
-  http://www.makina-corpus.com & http://makina-corpus.org
+* `Planet Makina Corpus <http://www.makina-corpus.org>`_
+* `Contact us <mailto:python@makina-corpus.org>`_
 
-    plone at makina-corpus org
+  .. |makinacom| image:: http://depot.makina-corpus.org/public/logo.gif
+  .. _makinacom:  http://www.makina-corpus.com
+
+
+
 
 
 TIPS
