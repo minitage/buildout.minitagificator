@@ -8,7 +8,7 @@ entry_points = {"zc.buildout.extension": ["default = %s" % entry_point]}
 
 setup(name='buildout.minitagificator',
       version=version,
-      description="A buildout extension to replace buildout part by minitage interesant ones sponsorised by Makina Corpus",
+      description="A buildout extension to replace buildout part by minitage interesant ones sponsored by Makina Corpus",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("src", "buildout", "minitagificator", "minitagificator.txt")).read()+"\n"+
                        open(os.path.join("docs", "HISTORY.txt")).read(),
