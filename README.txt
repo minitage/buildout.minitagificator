@@ -1,6 +1,8 @@
 Introduction
 ============
 
+.. contents:
+
     - This packages aims to replace some buildout parts by minitage's ones.
     - It replaces:
 
