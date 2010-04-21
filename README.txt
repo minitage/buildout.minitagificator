@@ -26,6 +26,11 @@ TIPS
 
 
 
+Makina Corpus Sponsorised software
+======================================
 
+  http://www.makina-corpus.com & http://makina-corpus.org
+
+    plone at makina-corpus org
 
 
