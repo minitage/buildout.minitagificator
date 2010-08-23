@@ -1,6 +1,11 @@
 Changelog
 =========
 
+UP
+-----
+
+    - zc.buildout 1.5 support
+
 
 2.4.9
 ------

@@ -92,8 +92,9 @@ def monkey_patch_buildout_installer(buildout):
                 links=(), index=None,
                 executable=dexecutable, always_unzip=None,
                 path=None, working_set=None, newest=True, versions=None,
-                use_dependency_links=None, allow_hosts=('*',)):
-
+                use_dependency_links=None, allow_hosts=('*',),
+                include_site_packages=None, allowed_eggs_from_site_packages=None,
+                prefer_final=None):
         if not '/' in executable:
             executable = common.which(executable)
 
@@ -145,18 +146,36 @@ def monkey_patch_buildout_installer(buildout):
         #).read().replace('\n', '')
         if buildout.offline:
             allow_hosts = 'None'
-        r.inst = easy_install.Installer(
-            dest=None,
-            index=r.index,
-            links=r.find_links,
-            executable=r.executable,
-            always_unzip=r.zip_safe,
-            newest = newest,
-            versions = versions,
-            use_dependency_links = use_dependency_links,
-            path=r.eggs_caches,
-            allow_hosts=allow_hosts,
-        )
+        try:
+            r.inst = easy_install.Installer(
+                dest=None,
+                index=r.index,
+                links=r.find_links,
+                executable=r.executable,
+                always_unzip=r.zip_safe,
+                newest = newest,
+                versions = versions,
+                use_dependency_links = use_dependency_links,
+                path=r.eggs_caches,
+                allow_hosts=allow_hosts,
+                include_site_packages=None,
+                allowed_eggs_from_site_packages=None,
+                prefer_final=None,
+            )
+        except:
+            # buildout < 1.5.0
+            r.inst = easy_install.Installer(
+                dest=None,
+                index=r.index,
+                links=r.find_links,
+                executable=r.executable,
+                always_unzip=r.zip_safe,
+                newest = newest,
+                versions = versions,
+                use_dependency_links = use_dependency_links,
+                path=r.eggs_caches,
+                allow_hosts=allow_hosts,
+            )
         r.platform_scan()
         reqs, working_set = r.working_set(working_set=working_set)
         return working_set
