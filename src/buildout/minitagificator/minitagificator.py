@@ -330,7 +330,7 @@ def enable_dumping_picked_versions(old_append):
 
 def monkey_patch_buildout_dumppickedversion(buildout):
     if 'buildout.dumppickedversions' in buildout['buildout']['extensions']:
-        if  getattr(Egg, 'append', None):
+        if not getattr(Egg, 'append', None):
             msg = 'Please update to minitage.recipe.egg>=1.88 to use with buildout.dumppickedversions.\n'
             import minitage.recipe.egg
             msg += 'Its current location is %s.\n' % (os.path.dirname(minitage.recipe.egg.__file__))
