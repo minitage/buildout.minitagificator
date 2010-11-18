@@ -85,6 +85,7 @@ def monkey_patch_recipes(buildout):
     except Exception, e:
         __log__.debug('!!!! Can\'t patch zc.recipe.cmmi')
 
+
 def monkey_patch_buildout_installer(buildout):
     __log__.info('Minitaging Buildout Installer')
     dexecutable = buildout['buildout']['executable']
@@ -294,8 +295,54 @@ def set_minitage_env(buildout):
     r._set_py_path()
     r._set_pkgconfigpath()
 
+def enable_dumping_picked_versions_req(old_working_set):
+    def working_set(self, extras=None, working_set=None, dest=None):
+        reqs, iws = old_working_set(self,
+                                   extras = extras,
+                                   working_set = working_set,
+                                   dest = dest)
+        ws = list(iws)
+        ws.sort()
+        from buildout.dumppickedversions import required_by
+        for req in self.dependency_tree:
+            req_ = str(req.project_name)
+            for mid in self.dependency_tree[req]:
+                dist = self.dependency_tree[req][mid]
+                dist_ = str(dist)
+                if (req_ in required_by
+                    and dist_ not in required_by[req_]):
+                        required_by[req_].append(dist_)
+                else:
+                    required_by[req_] = [dist_]
+        return reqs, iws
+    return working_set
+
+def enable_dumping_picked_versions(old_append):
+    def append(self, requirement, dist, dists):
+        dists = old_append(self, requirement, dist, dists)
+        if not (dist.precedence == pkg_resources.DEVELOP_DIST
+                or (len(requirement.specs) == 1
+                    and requirement.specs[0][0] == '==')
+               ):
+            Installer.__picked_versions[dist.project_name] = dist.version
+            return dist
+    return append
+
+def monkey_patch_buildout_dumppickedversion(buildout):
+    if 'buildout.dumppickedversions' in buildout['buildout']['extensions']:
+        if  getattr(Egg, 'append', None):
+            msg = 'Please update to minitage.recipe.egg>=1.88 to use with buildout.dumppickedversions.\n'
+            import minitage.recipe.egg
+            msg += 'Its current location is %s.\n' % (os.path.dirname(minitage.recipe.egg.__file__))
+            msg += 'Either fix your buildout version of minitage.recipe.egg or delete this egg.\n'
+            __log__.error(msg)
+            raise Exception(msg)
+        Egg.append = enable_dumping_picked_versions(Egg.append)
+        Egg.working_set = enable_dumping_picked_versions_req(Egg.working_set)
+
 def install(buildout=None):
     # pre-initialize me, the hacky way !
+    monkey_patch_buildout_dumppickedversion(buildout)
     monkey_patch_buildout_installer(buildout)
     monkey_patch_buildout_scripts(buildout)
     monkey_patch_buildout_options(buildout)
