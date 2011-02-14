@@ -6,6 +6,7 @@ UP
 
     - zc.buildout 1.5 support
     - compatibility with buildout.dumppickedversions
+    - Drop unusued recipes dependency
 
 
 2.4.9
