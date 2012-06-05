@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.4.18 (unreleased)
----------------------
+2.4.18 (2012-06-05)
+-------------------
 
     - zc.buildout 1.5 support
     - compatibility with buildout.dumppickedversions
