@@ -1,12 +1,13 @@
 Changelog
 =========
 
-UP
------
+2.4.18 (unreleased)
+---------------------
 
     - zc.buildout 1.5 support
     - compatibility with buildout.dumppickedversions
     - Drop unusued recipes dependency
+    - fix entry point parsing for scripts wrapper
 
 
 2.4.9

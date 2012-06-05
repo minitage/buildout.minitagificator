@@ -275,7 +275,7 @@ def monkey_patch_buildout_scripts(buildout):
                         #other wise, just add the dist to the scripts for later use
                         options['scripts'] += '\n%s' % req
             elif isinstance(req, tuple):
-                options['entry-points'] += '%s=%s:%s' % req
+                options['entry-points'] += '%s=%s:%s\n' % req
         r = Script(buildout, 'foo', options)
         if dest and options.get('bin-directory', False):
             if dest == options['bin-directory']:
