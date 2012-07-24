@@ -4,7 +4,7 @@ Changelog
 y (unreleased)
 --------------
 
-- Nothing changed yet.
+- scripts bugfix
 
 
 2.4.18 (2012-06-05)

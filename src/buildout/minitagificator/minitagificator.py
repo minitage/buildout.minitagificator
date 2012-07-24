@@ -16,7 +16,7 @@
 __docformat__ = 'restructuredtext en'
 
 import sys
-from copy import copy
+from copy import copy, deepcopy
 import os
 import logging
 
@@ -241,6 +241,12 @@ def monkey_patch_buildout_scripts(buildout):
             executable = common.which(executable)
         if not scripts:
             scripts = []
+        if isinstance(scripts, dict):
+            cscripts = deepcopy(scripts)
+            scripts = []
+            for item in cscripts:
+                scripts.append('%s=%s' % (item, cscripts[item]))
+        import pdb;pdb.set_trace()  ## Breakpoint ##
         if (not relative_paths) or (relative_paths == 'false'):
             relative_paths = 'false'
         else:
