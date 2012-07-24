@@ -246,7 +246,6 @@ def monkey_patch_buildout_scripts(buildout):
             scripts = []
             for item in cscripts:
                 scripts.append('%s=%s' % (item, cscripts[item]))
-        import pdb;pdb.set_trace()  ## Breakpoint ##
         if (not relative_paths) or (relative_paths == 'false'):
             relative_paths = 'false'
         else:

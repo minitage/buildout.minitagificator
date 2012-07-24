@@ -4,12 +4,6 @@ Changelog
 2.4.21 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
-
-2.4.20 (2012-07-24)
--------------------
-
 - scripts bugfix
 
 
