@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.4.23 (unreleased)
+2.4.24 (unreleased)
 -------------------
 
 - add minitagificator section option reading
