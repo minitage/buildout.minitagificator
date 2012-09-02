@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 
 
@@ -293,8 +294,8 @@ def monkey_patch_buildout_scripts(buildout):
     easy_install.scripts = scripts
 
 def set_minitage_env(buildout):
-    options = {}
-    r = Script(buildout, 'foo', options)
+    options = buildout.get('minitagificator', {})
+    r = Script(buildout, 'minitagificator', options)
     r._set_compilation_flags()
     r._set_path()
     r._set_py_path()

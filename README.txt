@@ -41,6 +41,6 @@ TIPS
     -   set ``minitage-globalenv`` in buildout for the extension to set cflags
         and other things borrowed from the project minibuild if any.
 
-
-
+        - it will look for a section ``[minitagificator]`` to have regular options like
+          extra-flags, path or includes to add to the environment
 
