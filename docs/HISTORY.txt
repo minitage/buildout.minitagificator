@@ -4,7 +4,7 @@ Changelog
 2.4.25 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- buildout2 compat
 
 
 2.4.24 (2012-09-02)

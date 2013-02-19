@@ -99,6 +99,8 @@ def monkey_patch_buildout_installer(buildout):
                 prefer_final=None):
         if not '/' in executable:
             executable = common.which(executable)
+        if os.path.exists(executable):
+            executable = os.path.abspath(executable)
 
         if not working_set:
             working_set = pkg_resources.WorkingSet([])
@@ -240,6 +242,8 @@ def monkey_patch_buildout_scripts(buildout):
                ):
         if not '/' in executable:
             executable = common.which(executable)
+        if os.path.exists(executable):
+            executable = os.path.abspath(executable)
         if not scripts:
             scripts = []
         if isinstance(scripts, dict):
@@ -286,7 +290,6 @@ def monkey_patch_buildout_scripts(buildout):
         if dest and options.get('bin-directory', False):
             if dest == options['bin-directory']:
                 dest = buildout['buildout'].get('eggs-directory', 'eggs')
-
         r._dest = dest
         res = r.install(working_set=working_set)
         return res
