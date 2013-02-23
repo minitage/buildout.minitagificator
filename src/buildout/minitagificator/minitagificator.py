@@ -28,7 +28,7 @@ from zc.buildout.easy_install import Installer
 from minitage.recipe.egg.egg import Recipe as Egg
 from minitage.recipe.common import common
 from minitage.recipe.scripts.scripts import Recipe as Script
-from minitage.recipe.cmmi.cmmi import Recipe as Cmmi
+from minitage.recipe.cmmi.cmmi import Recipe as bCmmi
 from minitage.recipe.scripts.scripts import parse_entry_point
 
 __log__ = logging.getLogger('buildout.minitagificator')
@@ -42,6 +42,18 @@ def activate(ws):
 class Script(Script):
 
     for_patchs = True
+
+class Cmmi(bCmmi):
+
+    def install(self, *args, **kw):
+        self.options['install-in-place'] = 'true'
+        bCmmi.install(self, *args, **kw)
+        return self.options['location']
+
+    def update(self, *args, **kw):
+        self.options['install-in-place'] = 'true'
+        bCmmi.update(self, *args, **kw)
+        return self.options['location']
 
 def monkey_patch_recipes(buildout):
     # try to patch zc.recipe.egg
@@ -223,7 +235,8 @@ def monkey_patch_buildout_options(buildout):
         initialization = True
         monkey_patch_recipes(buildout)
         Options._buildout = buildout
-        return Options._old_call(self, f)
+        ret = Options._old_call(self, f)
+        return ret
     Options._old_call = Options._call
     Options._call = _call
 

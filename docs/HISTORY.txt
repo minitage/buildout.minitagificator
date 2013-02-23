@@ -4,7 +4,7 @@ Changelog
 2.4.27 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- fix cmmi api
 
 
 2.4.26 (2013-02-21)
