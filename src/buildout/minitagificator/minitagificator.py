@@ -27,7 +27,7 @@ from zc.buildout.easy_install import Installer
 
 from minitage.recipe.egg.egg import Recipe as Egg
 from minitage.recipe.common import common
-from minitage.recipe.scripts.scripts import Recipe as Script
+from minitage.recipe.scripts.scripts import Recipe as bScript
 from minitage.recipe.cmmi.cmmi import Recipe as bCmmi
 from minitage.recipe.scripts.scripts import parse_entry_point
 
@@ -39,9 +39,14 @@ def activate(ws):
             sys.path.append(entry)
 
 
-class Script(Script):
+class Script(bScript):
 
     for_patchs = True
+
+    def __init__(self, buildout, name, options):
+        if 'url' in options:
+            del options['url']
+        bScript.__init__(self, buildout, name, options)
 
 class Cmmi(bCmmi):
 

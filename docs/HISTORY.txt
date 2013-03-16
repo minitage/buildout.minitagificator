@@ -4,7 +4,7 @@ Changelog
 2.4.28 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- fix scripts api
 
 
 2.4.27 (2013-02-25)
