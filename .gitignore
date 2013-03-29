@@ -6,3 +6,6 @@ bin
 eggs/
 develop-eggs/
 trunk
+*pyo
+*pyc
+build
