@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.4.29 (unreleased)
+2.4.29 (2013-06-26)
 -------------------
 
 - fix cmmi API to use install-in-place by default
