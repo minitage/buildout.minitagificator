@@ -50,8 +50,11 @@ class Script(bScript):
 
 class Cmmi(bCmmi):
 
+    def __init__(self, buildout, name, options):
+        options['install-in-place'] = 'true'
+        super(Cmmi, self).__init__(buildout, name, options)
+
     def install(self, *args, **kw):
-        self.options['install-in-place'] = 'true'
         bCmmi.install(self, *args, **kw)
         return self.options['location']
 

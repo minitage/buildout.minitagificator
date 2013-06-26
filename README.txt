@@ -32,15 +32,23 @@ Makina Corpus sponsored software
 .. _makinacom:  http://www.makina-corpus.com
 
 
-
-
-
 TIPS
 ========
 
     -   set ``minitage-globalenv`` in buildout for the extension to set cflags
-        and other things borrowed from the project minibuild if any.
+        and other things borrowed from the project minibuild if any::
 
-        - it will look for a section ``[minitagificator]`` to have regular options like
-          extra-flags, path or includes to add to the environment
+        [minitagificator]
+        minitage-globalenv = true
+
+
+    - it will look for a section ``[minitagificator]`` to have regular options like
+      extra-flags, path or includes to add to the environment (see
+      minitage.recipe.common)::
+
+        [minitagificator]
+        cflags = -I/foo/bar
+        path = /foo/baz/bin
+
+
 
